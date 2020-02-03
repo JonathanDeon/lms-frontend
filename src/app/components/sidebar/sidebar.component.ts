@@ -20,6 +20,7 @@ export let ROUTES: RouteInfo[] = [
     { path: 'icons', title: 'Icons', icon: 'bubble_chart', class: '' },
     { path: 'maps', title: 'Maps', icon: 'location_on', class: '' },
     { path: 'notifications', title: 'Notifications', icon: 'notifications', class: '' },
+    { path: 'teacher-dashboard', title: 'Teacher Dashboard', icon: 'dashboard', class: '' },
 ];
 
 @Component({
@@ -34,7 +35,9 @@ export class SidebarComponent implements OnInit {
     constructor(private http: Http) { }
 
     ngOnInit() {
-        let role = 3;
+        let user:any = JSON.parse(localStorage.getItem('authUser'));
+        let role = user.role;
+        
         this.getJSON().subscribe(data => {
              this.permissions=data;
              this.permissions.forEach(permission => {

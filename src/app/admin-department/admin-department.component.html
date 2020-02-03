@@ -1,0 +1,73 @@
+<div class="main-content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" data-background-color="blue">
+            <button class="btn btn-white pull-right" data-toggle="modal" data-target="#myModal">
+              <i class="material-icons">add</i>
+            </button>
+            <h4 class="title">Department</h4>
+            <p class="category">Department Information</p>
+          </div>
+          <div class="card-content table-responsive">
+            <table class="table">
+              <thead class="text-info">
+                <tr>
+                  <th>Department ID</th>
+                  <th>Department Name</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let department of departments">
+                  <td>{{department.dId}}</td>
+                  <td>{{department.name}}</td>
+                  <td>{{department.description}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="myModal" class="modal fade" role="dialog" data-backdrop="false" style="overflow: auto;" tabindex="-1">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add New Department</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group form-success label-floating is-empty">
+                  <label class="control-label">Department Name: </label>
+                  <input class="form-control" name="departmentName" rows="5" [(ngModel)]="department.name">
+                  <span class="material-input"></span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group form-success label-floating is-empty">
+                  <label class="control-label">Department Description</label>
+                  <input class="form-control" name="departmentDesc" rows="5" [(ngModel)]="department.description">
+                  <span class="material-input"></span>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="clearfix"></div> -->
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal" (click)="addDepartment()">Save </button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
