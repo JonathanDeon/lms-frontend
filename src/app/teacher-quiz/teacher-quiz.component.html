@@ -1,0 +1,251 @@
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header" data-background-color="blue">
+          <h4 class="title">Quiz Details</h4>
+          <p class="category">Quiz no: {{quizNo}}</p>
+        </div>
+        <div class="card-content">
+          <p class="category">Quiz Name</p>
+          <h4 class="title">{{quiz.name}}</h4>
+        </div>
+        <div class="card-content">
+          <p class="category">Date</p>
+          <h4 class="title">{{quiz.date | date}}</h4>
+        </div>
+        <div class="card-content">
+          <p class="category">Duration</p>
+          <h4 class="title">{{quiz.duration}} hours</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+      <div class="card card-stats">
+        <div class="card-header" data-background-color="orange">
+          <i class="material-icons">help</i>
+        </div>
+        <div class="card-content">
+          <p class="category">Questions for this quiz</p>
+          <h3 class="title" *ngIf="questions.length==0">0
+            <small>questions</small>
+          </h3>
+          <h3 class="title" *ngIf="questions.length==1">1
+            <small>question</small>
+          </h3>
+          <h3 class="title" *ngIf="questions.length>1">{{questions?.length}}
+            <small>questions</small>
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6" *ngIf="quiz.active">
+      <div class="card card-stats">
+        <div class="card-header" data-background-color="green">
+          <i class="material-icons">done</i>
+        </div>
+        <div class="card-content">
+          <p class="category">Quiz is</p>
+          <h3 class="title">Active
+          </h3>
+          <h3 class="title" *ngIf="questions.length==1">1
+            <small>question</small>
+          </h3>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <a (click)="markAsActive()"><i class="material-icons">close</i> Mark quiz as inactive</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6" *ngIf="!quiz.active">
+      <div class="card card-stats">
+        <div class="card-header" data-background-color="red">
+          <i class="material-icons">close</i>
+        </div>
+        <div class="card-content">
+          <p class="category">Quiz is</p>
+          <h3 class="title">Inactive
+          </h3>
+          <h3 class="title" *ngIf="questions.length==1">1
+            <small>question</small>
+          </h3>
+        </div>
+        <div class="card-footer">
+          <div class="stats">
+            <a (click)="markAsActive()"><i class="material-icons">done</i> Activate quiz</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header" data-background-color="red">
+            <i class="material-icons">assignment_turned_in</i>
+          </div>
+          <div class="card-content">
+            <h3 class="title">
+              <a (click)="generateGradeSheet()" data-original-title="Generate Grading Sheet" data-toggle="modal"
+              data-target="#gradeSheetModal"><small>Generate grading sheet</small></a>
+            </h3>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header" data-background-color="blue">
+          <h4 class="title">Add New Question to quiz</h4>
+          <p class="category">Quiz no: {{quizNo}}</p>
+        </div>
+        <div class="card-content">
+          <form>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group label-floating is-empty">
+                  <label class="control-label">Question</label>
+                  <input type="text" class="form-control" name="question" [(ngModel)]="question">
+                  <span class="material-input"></span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group label-floating is-empty">
+                  <label class="control-label">Add Answer</label>
+                  <input type="text" class="form-control" name="answer" [(ngModel)]="answer">
+                  <span class="material-input"></span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group label-floating is-empty">
+                  <button class="btn btn-info btn-round" (click)="addAnswer()"><i class="material-icons">add</i><div class="ripple-container"></div></button>
+                </div>
+              </div>
+              <div class="tab-content">
+                <div class="tab-pane active" id="profile">
+                  <table class="table">
+                    <tbody>
+                      <tr *ngFor="let answer of answers;">
+                        <td>
+                        </td>
+                        <td>{{answer}}</td>
+                        <td class="td-actions text-right">
+                          <button type="button" rel="tooltip" title="" class="btn btn-info btn-simple btn-xs" data-original-title="Edit Task" (click)=editAnswer(answer)>
+                                <i class="material-icons">edit</i>
+                            </button>
+                          <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Remove" (click)="removeAnswer(answer)">
+                            <i class="material-icons">close</i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group label-floating is-empty">
+                  <label class="control-label">Correct Answer</label>
+                  <input type="text" class="form-control" [(ngModel)]="quiz.correctAnswer" name="correctAnswer">
+                  <span class="material-input"></span>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-info pull-right" (click)="addQuiz()">{{ addQuestion ? "Add Question" : "Edit Question"}}</button>
+            <div class="clearfix"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header" data-background-color="green">
+          <h4 class="title">Questions</h4>
+        </div>
+        <div class="card-content table-responsive">
+          <table class="table">
+            <thead class="text-success">
+              <tr>
+                <th>Questions</th>
+                <th>Answers</th>
+                <th>Correct Answer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let question of questions;">
+                <td>{{question.question}}</td>
+                <td>
+                  <p *ngFor="let answer of question.answers;">{{answer}}</p>
+                </td>
+                <td>{{question.correctAnswer}}</td>
+                <td class="td-actions text-right">
+                  <button type="button" rel="tooltip" title="" class="btn btn-info btn-simple btn-xs" data-original-title="Edit Task" (click)="editQuestion(question.queId)"><!--(click)="showDialog = !showDialog"-->
+                                  <i class="material-icons">edit</i>
+                              </button>
+                  <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Remove" (click)=deleteQuestion(question.queId)>
+                                  <i class="material-icons">close</i>
+                              </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Assignment Modal -->
+<div id="gradeSheetModal" class="modal fade" role="dialog" data-backdrop="false" style="overflow: auto;" tabindex="-1">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Grade Sheet for Quiz</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group form-info label-floating is-empty">
+                <table class="table">
+                  <thead class="text-info">
+                    <tr>
+                      <th>Student ID</th>
+                      <th>Marks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let quizMark of quizMarks;">
+                      <td>{{quizMark.student.name}}</td>
+                      <td>{{quizMark.marks}}</td>                      
+                      <td class="td-actions text-right">
+                        <button type="button" rel="tooltip" title="" class="btn btn-info btn-simple btn-xs" data-original-title="Edit Task" (click)="editQuestion(question.queId)"><!--(click)="showDialog = !showDialog"-->
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs" data-original-title="Remove" (click)=deleteQuestion(question.queId)>
+                                        <i class="material-icons">close</i>
+                                    </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
